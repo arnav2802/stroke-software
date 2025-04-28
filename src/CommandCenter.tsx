@@ -5,18 +5,13 @@ const questions = Array.from({ length: 9 }, (_, i) => `Question ${i + 1}`);
 const CommandCenter: React.FC = () => {
     return (
         <div className="flex flex-1 bg-gradient-to-br from-blue-100 via-white to-blue-200 p-8 min-h-screen font-sans overflow-hidden ">
-            {/* Command Center Form */}
+
             <div className="flex flex-col w-full md:w-1/2 pr-0 md:pr-8">
                 <div className="backdrop-blur-md bg-white/70 border border-blue-100 rounded-3xl shadow-2xl p-8 mb-8 transition-all duration-300">
                     <div className="flex flex-col md:flex-row">
                         <div className="flex flex-col items-center md:mr-8 mb-6 md:mb-0">
-                            {/* Modern Avatar Icon */}
+
                             <div className="bg-gradient-to-br from-blue-400 to-blue-200 rounded-full w-32 h-32 flex items-center justify-center mb-3 shadow-lg border-4 border-white">
-                                <svg className="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="8" r="6" strokeWidth="2" />
-                                    <path strokeWidth="2" d="M4 20c0-4 8-4 8-4s8 0 8 4" />
-                                    <path strokeWidth="2" d="M19 8v6M22 11h-6" />
-                                </svg>
                             </div>
                             <span className="text-xs text-gray-500">timestamp - [00:00:00]</span>
                             <input
@@ -57,7 +52,7 @@ const CommandCenter: React.FC = () => {
                     </button>
                 </div>
             </div>
-            {/* Questionnaire */}
+
             <div className="w-0 md:w-1/2 pl-0 md:pl-8 hidden md:block">
                 <div className="backdrop-blur-md bg-white/70 border border-blue-100 rounded-3xl shadow-2xl p-8">
                     <h2 className="text-3xl font-extrabold text-center mb-8 text-blue-700 tracking-tight">Questionnaire</h2>
