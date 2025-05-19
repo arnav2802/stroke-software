@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const questions = Array.from({ length: 9 }, (_, i) => `Question ${i + 1}`);
 
 const CommandCenter: React.FC = () => {
+    const navigate = useNavigate();
     return (
         <div className="flex flex-1 bg-gradient-to-br from-blue-100 via-white to-blue-200 p-8 min-h-screen font-sans overflow-hidden ">
 
@@ -75,9 +77,7 @@ const CommandCenter: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex justify-end">
-                    <button className="bg-gradient-to-r from-blue-500 to-blue-400 hover:from-blue-600 hover:to-blue-500 text-white px-10 py-3 rounded-xl mt-8 self-end transition font-bold shadow-lg text-lg tracking-wide focus:ring-4 focus:ring-blue-200">
-                        Next
-                    </button>
+                    <button className="bg-gradient-to-r from-blue-500 to-blue-400 hover:from-blue-600 hover:to-blue-500 text-white px-10 py-3 rounded-xl mt-8 self-end transition font-bold shadow-lg text-lg tracking-wide focus:ring-4 focus:ring-blue-200" onClick={() => navigate('/emergency')}>Next</button>
                 </div>
             </div>
 

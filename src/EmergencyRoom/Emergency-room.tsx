@@ -1,38 +1,331 @@
 import React, { useState } from 'react';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import PatientVitalsForm from './PatientVitalsForm';
+import ABCDform from './ABCDform';
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const EmergencyRoom: React.FC = () => {
-    const vitals = ['Pulse Rate', 'Blood Pressure', 'Respiratory Rate', 'Random Blood Sugar', 'Temperature', 'SpO2'];
+const [openDialog, setOpenDialog] = useState<string | null>(null);
 
-    // Initialize state with default values for each vital
-    const [vitalValues, setVitalValues] = useState<Record<string, number>>(
-        vitals.reduce((acc, label) => {
-            acc[label] = 50; // default initial value
-            return acc;
-        }, {} as Record<string, number>)
-    );
+const handleClickOpen = (dialogName: string) => {
+  setOpenDialog(dialogName);
+};
 
-    const handleVitalChange = (label: string, value: number) => {
-        setVitalValues(prev => ({ ...prev, [label]: value }));
-    };
+const handleClose = () => {
+  setOpenDialog(null);
+};
+
+
+//'Patient Vitals', 'Provisional Diagnosis', 'Sample Taken', 'ABCD'
 
     return (
-        <div className="flex flex-col md:flex-row bg-blue-100 h-screen font-sans">
+        <div className="md:flex-row bg-blue-100 h-screen w-full font-sans">
 
-           <div className='flex flex-1'>
-             {/* Main Content */}
-            <div className="w-1/2 p-4 space-y-4">
+            {/* Main Content */}
+            <div className="w-full p-4 space-y-4">
                 <h1 className="text-3xl font-extrabold text-blue-700 text-center">Emergency room</h1>
 
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                    {['Patient Vitals', 'Provisional Diagnosis', 'Sample Taken', 'ABCD'].map((cardTitle, idx) => (
-                        <div
-                            key={idx}
-                            className="bg-white p-4 rounded-xl shadow-lg hover:shadow-2xl transition-shadow"
-                        >
-                            <h3 className="text-lg font-semibold text-center">{cardTitle}</h3>
-                            <p className="text-center text-blue-500 cursor-pointer">Click for side view</p>
-                        </div>
-                    ))}
+                <div className="grid grid-cols-3 gap-4">
+                        {/* Patient Vital */}
+                        <Card sx={{ maxWidth: 265, maxHeight: 245 }}  className='bg-white p-4 rounded-xl shadow-lg hover:shadow-2xl transition-shadow'>
+                            <div className='flex '>
+                                <CardMedia
+                                    component="img"
+                                    alt="report icon"
+                                    height="120"
+                                    width='60'
+                                    image="src\assets\report-image.jpg"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        Patient's Vital
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        fill vitals
+                                    </Typography>
+                                </CardContent>
+                            </div>
+                            <CardActions>
+                                <Button  onClick={() => handleClickOpen('patientVitals')}>
+                                    Open
+                                </Button>
+                                <Dialog
+                                    open={openDialog === 'patientVitals'}
+                                    slots={{
+                                        transition: Transition,
+                                    }}
+                                    keepMounted
+                                    onClose={handleClose}
+                                    aria-describedby="alert-dialog-slide-description"
+                                >
+                                    <DialogTitle>{'Patient Vitals Form'}</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText id="alert-dialog-slide-description">
+                                            <PatientVitalsForm/>
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose} >reset</Button>
+                                        <Button onClick={handleClose} variant='outlined'>Submit</Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </CardActions>
+                        </Card>
+                        
+                        {/* Provisinal Diagnosis */}
+                        <Card sx={{ maxWidth: 265, maxHeight: 245 }}  className='bg-white p-4 rounded-xl shadow-lg hover:shadow-2xl transition-shadow'>
+                            <div className='flex '>
+                                <CardMedia
+                                    component="img"
+                                    alt="report icon"
+                                    height="120"
+                                    width='60'
+                                    image="src\assets\report-image.jpg"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        Provisinal Diagnosis
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        provide diagnosis
+                                    </Typography>
+                                </CardContent>
+                            </div>
+                            <CardActions>
+                                <Button  onClick={() => handleClickOpen('provisionalDiagnosis')}>
+                                    Open
+                                </Button>
+                                <Dialog
+                                    open={openDialog === 'provisionalDiagnosis'}
+                                    slots={{
+                                        transition: Transition,
+                                    }}
+                                    keepMounted
+                                    onClose={handleClose}
+                                    aria-describedby="alert-dialog-slide-description"
+                                >
+                                    <DialogTitle>{"Provisinal Diagnosis Form"}</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText id="alert-dialog-slide-description">
+                                            <PatientVitalsForm/>
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose} >reset</Button>
+                                        <Button onClick={handleClose} variant='outlined'>Submit</Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </CardActions>
+                        </Card>
+
+                        {/* Sample Taken */}
+                        <Card sx={{ maxWidth: 265, maxHeight: 245 }}  className='bg-white p-4 rounded-xl shadow-lg hover:shadow-2xl transition-shadow'>
+                            <div className='flex '>
+                                <CardMedia
+                                    component="img"
+                                    alt="report icon"
+                                    height="120"
+                                    width='60'
+                                    image="src\assets\report-image.jpg"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        Sample Taken
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        fill vitals
+                                    </Typography>
+                                </CardContent>
+                            </div>
+                            <CardActions>
+                                <Button  onClick={() => handleClickOpen('sampleTaken')}>
+                                    Open
+                                </Button>
+                                <Dialog
+                                    open={openDialog === 'sampleTaken'}
+                                    slots={{
+                                        transition: Transition,
+                                    }}
+                                    keepMounted
+                                    onClose={handleClose}
+                                    aria-describedby="alert-dialog-slide-description"
+                                >
+                                    <DialogTitle>{"Sample Taken Form"}</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText id="alert-dialog-slide-description">
+                                            <PatientVitalsForm/>
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose} >reset</Button>
+                                        <Button onClick={handleClose} variant='outlined'>Submit</Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </CardActions>
+                        </Card>
+
+                        {/* ABCD */}
+                        <Card sx={{ maxWidth: 265, maxHeight: 245 }}  className='bg-white p-4 rounded-xl shadow-lg hover:shadow-2xl transition-shadow'>
+                            <div className='flex '>
+                                <CardMedia
+                                    component="img"
+                                    alt="report icon"
+                                    height="120"
+                                    width='60'
+                                    image="src\assets\report-image.jpg"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        ABCD
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        fill vitals
+                                    </Typography>
+                                </CardContent>
+                            </div>
+                            <CardActions>
+                                <Button  onClick={() => handleClickOpen('abcd')}>
+                                    Open
+                                </Button>
+                                <Dialog
+                                    open={openDialog === 'abcd'}
+                                    slots={{
+                                        transition: Transition,
+                                    }}
+                                    keepMounted
+                                    onClose={handleClose}
+                                    aria-describedby="alert-dialog-slide-description"
+                                >
+                                    <DialogTitle>{"ABCD Form"}</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText id="alert-dialog-slide-description">
+                                            <ABCDform />
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose} >reset</Button>
+                                        <Button onClick={handleClose} variant='outlined'>Submit</Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </CardActions>
+                        </Card>
+
+                        {/* Examination Findings */}
+                        <Card sx={{ maxWidth: 265, maxHeight: 245 }}  className='bg-white p-4 rounded-xl shadow-lg hover:shadow-2xl transition-shadow'>
+                            <div className='flex '>
+                                <CardMedia
+                                    component="img"
+                                    alt="report icon"
+                                    height="120"
+                                    width='60'
+                                    image="src\assets\report-image.jpg"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        Examination Findings
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        fill findings
+                                    </Typography>
+                                </CardContent>
+                            </div>
+                            <CardActions>
+                                <Button  onClick={() => handleClickOpen('emergencyFindings')}>
+                                    Open
+                                </Button>
+                                <Dialog
+                                    open={openDialog === 'emergencyFindings'}
+                                    slots={{
+                                        transition: Transition,
+                                    }}
+                                    keepMounted
+                                    onClose={handleClose}
+                                    aria-describedby="alert-dialog-slide-description"
+                                >
+                                    <DialogTitle>{"Examination Findings Form"}</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText id="alert-dialog-slide-description">
+                                            <PatientVitalsForm/>
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose} >reset</Button>
+                                        <Button onClick={handleClose} variant='outlined'>Submit</Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </CardActions>
+                        </Card>
+
+                        {/* Emergency Treatment */}
+                        <Card sx={{ maxWidth: 265, maxHeight: 245 }}  className='bg-white p-4 rounded-xl shadow-lg hover:shadow-2xl transition-shadow'>
+                            <div className='flex '>
+                                <CardMedia
+                                    component="img"
+                                    alt="report icon"
+                                    height="120"
+                                    width='60'
+                                    image="src\assets\report-image.jpg"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        Emergency Treatment
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        fill Emergency Treatment
+                                    </Typography>
+                                </CardContent>
+                            </div>
+                            <CardActions>
+                                <Button  onClick={() => handleClickOpen('emergencyTreatment')}>
+                                    Open
+                                </Button>
+                                <Dialog
+                                    open={openDialog === 'emergencyTreatment'}
+                                    slots={{
+                                        transition: Transition,
+                                    }}
+                                    keepMounted
+                                    onClose={handleClose}
+                                    aria-describedby="alert-dialog-slide-description"
+                                >
+                                    <DialogTitle>{"Emergency Treatment Form"}</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText id="alert-dialog-slide-description">
+                                            <PatientVitalsForm/>
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose} >reset</Button>
+                                        <Button onClick={handleClose} variant='outlined'>Submit</Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </CardActions>
+                        </Card>
+                </div>
+
+                <div>
+
                 </div>
 
                 <div>
@@ -50,31 +343,6 @@ const EmergencyRoom: React.FC = () => {
                     </button>
                 </div>
             </div>
-
-            {/* Side View */}
-            <div className="w-1/2 p-4">
-                <h2 className="text-lg font-bold mb-2">Patient’s Vitals</h2>
-                {vitals.map((label, idx) => (
-                    <div key={idx} className="flex justify-between items-center mb-4">
-                        <span className="w-1/4">{label}</span>
-                        <input
-                            type="range"
-                            className="w-full mx-2"
-                            min="0"
-                            max="200"
-                            value={vitalValues[label]}
-                            onChange={(e) => handleVitalChange(label, Number(e.target.value))}
-                        />
-                        <input
-                            type="text"
-                            className="w-16 text-center border border-gray-300 rounded"
-                            value={vitalValues[label]}
-                            readOnly
-                        />
-                    </div>
-                ))}
-            </div>
-           </div>
         </div>
     );
 };
